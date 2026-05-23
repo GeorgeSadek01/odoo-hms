@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <!-- Tree View -->
+        <record id="hms_patient_view_tree" model="ir.ui.view">
+            <field name="name">hms.patient.tree</field>
+            <field name="model">hms.patient</field>
+            <field name="arch" type="xml">
+                <list string="Patients">
+                    <field name="first_name"/>
+                    <field name="last_name"/>
+                    <field name="birthdate"/>
+                    <field name="age"/>
+                    <field name="blood_type"/>
+                    <field name="pcr"/>
+                    <field name="cr_ratio"/>
+                    <field name="state"/>
+                </list>
+            </field>
+        </record>
+
+        <!-- Form View -->
+        <record id="hms_patient_view_form" model="ir.ui.view">
+            <field name="name">hms.patient.form</field>
+            <field name="model">hms.patient</field>
+            <field name="arch" type="xml">
+                <form string="Patient">
+                    <header>
+                        <field name="state" widget="statusbar" options="{'clickable': True}"/>
+                    </header>
+                    <sheet>
+                        <group>
+                            <group string="Personal Information">
+                                <field name="first_name"/>
+                                <field name="last_name"/>
+                                <field name="birthdate"/>
+                                <field name="age"/>
+                                <field name="blood_type"/>
+                                <field name="pcr"/>
+                            </group>
+                            <group string="Medical Information">
+                                <field name="cr_ratio" required="[('pcr', '=', True)]"/>
+                                <field name="image" widget="image"/>
+                            </group>
+                        </group>
+                        <group>
+                            <group string="Department">
+                                <field name="department_id" domain="[('is_opened', '=', True)]"/>
+                                <field name="department_capacity"/>
+                            </group>
+                            <group string="Doctors">
+                                <field name="doctor_ids" widget="many2many_tags" readonly="[('department_id', '=', False)]"/>
+                            </group>
+                        </group>
+                        <notebook>
+                            <page string="History" invisible="[('age', '&lt;', 50)]">
+                                <field name="history" widget="html"/>
+                            </page>
+                            <page string="Address">
+                                <field name="address"/>
+                            </page>
+                            <page string="Log History">
+                                <field name="log_ids">
+                                    <list>
+                                        <field name="created_by"/>
+                                        <field name="date"/>
+                                        <field name="description"/>
+                                    </list>
+                                </field>
+                            </page>
+                        </notebook>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <!-- Search View -->
+        <record id="hms_patient_view_search" model="ir.ui.view">
+            <field name="name">hms.patient.search</field>
+            <field name="model">hms.patient</field>
+            <field name="arch" type="xml">
+                <search string="Search Patients">
+                    <field name="first_name"/>
+                    <field name="last_name"/>
+                    <field name="blood_type"/>
+                    <field name="state"/>
+                    <filter name="filter_pcr" string="PCR" domain="[('pcr', '=', True)]"/>
+                    <group>
+                        <filter name="group_by_blood_type" string="Blood Type" context="{'group_by': 'blood_type'}"/>
+                        <filter name="group_by_state" string="State" context="{'group_by': 'state'}"/>
+                    </group>
+                </search>
+            </field>
+        </record>
+
+        <!-- Window Action -->
+        <record id="hms_patient_action" model="ir.actions.act_window">
+            <field name="name">Patients</field>
+            <field name="res_model">hms.patient</field>
+            <field name="view_mode">list,form</field>
+            <field name="search_view_id" ref="hms_patient_view_search"/>
+        </record>
+
+        <!-- Menu -->
+        <menuitem id="hms_menu_root" name="HMS" sequence="100" web_icon="hms,static/img/icon.png"/>
+        <menuitem id="hms_menu_patients" name="Patients" parent="hms_menu_root" action="hms_patient_action" sequence="10"/>
+    </data>
+</odoo>
