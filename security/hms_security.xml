@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <record id="module_category_hms" model="ir.module.category">
+            <field name="name">Hospital Management</field>
+            <field name="sequence">100</field>
+        </record>
+
+        <record id="hms_privilege" model="res.groups.privilege">
+            <field name="name">HMS</field>
+            <field name="category_id" ref="module_category_hms"/>
+            <field name="sequence">100</field>
+        </record>
+
+        <record id="group_hms_user" model="res.groups">
+            <field name="name">User</field>
+            <field name="privilege_id" ref="hms_privilege"/>
+        </record>
+
+        <record id="group_hms_manager" model="res.groups">
+            <field name="name">Manager</field>
+            <field name="implied_ids" eval="[(4, ref('group_hms_user'))]"/>
+            <field name="privilege_id" ref="hms_privilege"/>
+            <field name="user_ids" eval="[(4, ref('base.user_admin'))]"/>
+        </record>
+
+        <record id="hms_patient_rule_user" model="ir.rule">
+            <field name="name">Patient: own records only</field>
+            <field name="model_id" ref="model_hms_patient"/>
+            <field name="domain_force">[('create_uid', '=', user.id)]</field>
+            <field name="groups" eval="[(4, ref('group_hms_user'))]"/>
+            <field name="perm_read" eval="1"/>
+            <field name="perm_write" eval="1"/>
+            <field name="perm_create" eval="0"/>
+            <field name="perm_unlink" eval="0"/>
+        </record>
+
+        <record id="hms_patient_log_rule_user" model="ir.rule">
+            <field name="name">Patient Log: own patients only</field>
+            <field name="model_id" ref="model_hms_patient_log"/>
+            <field name="domain_force">[('patient_id.create_uid', '=', user.id)]</field>
+            <field name="groups" eval="[(4, ref('group_hms_user'))]"/>
+            <field name="perm_read" eval="1"/>
+            <field name="perm_write" eval="0"/>
+            <field name="perm_create" eval="0"/>
+            <field name="perm_unlink" eval="0"/>
+        </record>
+
+        <record id="access_hms_patient_user" model="ir.model.access">
+            <field name="name">hms.patient.user</field>
+            <field name="model_id" ref="model_hms_patient"/>
+            <field name="group_id" ref="group_hms_user"/>
+            <field name="perm_read" eval="1"/>
+            <field name="perm_write" eval="1"/>
+            <field name="perm_create" eval="1"/>
+            <field name="perm_unlink" eval="0"/>
+        </record>
+        <record id="access_hms_patient_manager" model="ir.model.access">
+            <field name="name">hms.patient.manager</field>
+            <field name="model_id" ref="model_hms_patient"/>
+            <field name="group_id" ref="group_hms_manager"/>
+            <field name="perm_read" eval="1"/>
+            <field name="perm_write" eval="1"/>
+            <field name="perm_create" eval="1"/>
+            <field name="perm_unlink" eval="1"/>
+        </record>
+        <record id="access_hms_department_user" model="ir.model.access">
+            <field name="name">hms.department.user</field>
+            <field name="model_id" ref="model_hms_department"/>
+            <field name="group_id" ref="group_hms_user"/>
+            <field name="perm_read" eval="1"/>
+            <field name="perm_write" eval="0"/>
+            <field name="perm_create" eval="0"/>
+            <field name="perm_unlink" eval="0"/>
+        </record>
+        <record id="access_hms_department_manager" model="ir.model.access">
+            <field name="name">hms.department.manager</field>
+            <field name="model_id" ref="model_hms_department"/>
+            <field name="group_id" ref="group_hms_manager"/>
+            <field name="perm_read" eval="1"/>
+            <field name="perm_write" eval="1"/>
+            <field name="perm_create" eval="1"/>
+            <field name="perm_unlink" eval="1"/>
+        </record>
+        <record id="access_hms_doctor_user" model="ir.model.access">
+            <field name="name">hms.doctor.user</field>
+            <field name="model_id" ref="model_hms_doctor"/>
+            <field name="group_id" ref="group_hms_user"/>
+            <field name="perm_read" eval="1"/>
+            <field name="perm_write" eval="0"/>
+            <field name="perm_create" eval="0"/>
+            <field name="perm_unlink" eval="0"/>
+        </record>
+        <record id="access_hms_doctor_manager" model="ir.model.access">
+            <field name="name">hms.doctor.manager</field>
+            <field name="model_id" ref="model_hms_doctor"/>
+            <field name="group_id" ref="group_hms_manager"/>
+            <field name="perm_read" eval="1"/>
+            <field name="perm_write" eval="1"/>
+            <field name="perm_create" eval="1"/>
+            <field name="perm_unlink" eval="1"/>
+        </record>
+        <record id="access_hms_patient_log_user" model="ir.model.access">
+            <field name="name">hms.patient.log.user</field>
+            <field name="model_id" ref="model_hms_patient_log"/>
+            <field name="group_id" ref="group_hms_user"/>
+            <field name="perm_read" eval="1"/>
+            <field name="perm_write" eval="1"/>
+            <field name="perm_create" eval="1"/>
+            <field name="perm_unlink" eval="1"/>
+        </record>
+        <record id="access_hms_patient_log_manager" model="ir.model.access">
+            <field name="name">hms.patient.log.manager</field>
+            <field name="model_id" ref="model_hms_patient_log"/>
+            <field name="group_id" ref="group_hms_manager"/>
+            <field name="perm_read" eval="1"/>
+            <field name="perm_write" eval="1"/>
+            <field name="perm_create" eval="1"/>
+            <field name="perm_unlink" eval="1"/>
+        </record>
+    </data>
+</odoo>

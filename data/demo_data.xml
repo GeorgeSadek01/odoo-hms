@@ -49,6 +49,7 @@
         <record id="hms_patient_john" model="hms.patient">
             <field name="first_name">John</field>
             <field name="last_name">Doe</field>
+            <field name="email">john.doe@example.com</field>
             <field name="birthdate">1991-05-15</field>
             <field name="blood_type">A+</field>
             <field name="pcr" eval="False"/>
@@ -62,6 +63,7 @@
         <record id="hms_patient_jane" model="hms.patient">
             <field name="first_name">Jane</field>
             <field name="last_name">Smith</field>
+            <field name="email">jane.smith@example.com</field>
             <field name="birthdate">1998-08-22</field>
             <field name="blood_type">B-</field>
             <field name="pcr" eval="True"/>
@@ -75,6 +77,7 @@
         <record id="hms_patient_bob" model="hms.patient">
             <field name="first_name">Bob</field>
             <field name="last_name">Johnson</field>
+            <field name="email">bob.johnson@example.com</field>
             <field name="birthdate">1971-02-10</field>
             <field name="blood_type">O+</field>
             <field name="pcr" eval="False"/>
@@ -88,6 +91,7 @@
         <record id="hms_patient_alice" model="hms.patient">
             <field name="first_name">Alice</field>
             <field name="last_name">Williams</field>
+            <field name="email">alice.williams@example.com</field>
             <field name="birthdate">1961-11-30</field>
             <field name="blood_type">AB+</field>
             <field name="pcr" eval="True"/>

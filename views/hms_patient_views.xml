@@ -9,6 +9,7 @@
                 <list string="Patients">
                     <field name="first_name"/>
                     <field name="last_name"/>
+                    <field name="email"/>
                     <field name="birthdate"/>
                     <field name="age"/>
                     <field name="blood_type"/>
@@ -33,6 +34,7 @@
                             <group string="Personal Information">
                                 <field name="first_name"/>
                                 <field name="last_name"/>
+                                <field name="email"/>
                                 <field name="birthdate"/>
                                 <field name="age"/>
                                 <field name="blood_type"/>
@@ -48,12 +50,12 @@
                                 <field name="department_id" domain="[('is_opened', '=', True)]"/>
                                 <field name="department_capacity"/>
                             </group>
-                            <group string="Doctors">
-                                <field name="doctor_ids" widget="many2many_tags" readonly="[('department_id', '=', False)]"/>
+                            <group string="Doctors" groups="hms.group_hms_manager">
+                                <field name="doctor_ids" widget="many2many_tags" readonly="not department_id"/>
                             </group>
                         </group>
                         <notebook>
-                            <page string="History" invisible="[('age', '&lt;', 50)]">
+                            <page string="History" invisible="age &lt; 50">
                                 <field name="history" widget="html"/>
                             </page>
                             <page string="Address">

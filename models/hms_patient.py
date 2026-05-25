@@ -1,5 +1,7 @@
-from odoo import api, fields, models
+from odoo import api, fields, models, _
+from odoo.exceptions import ValidationError
 from datetime import date
+import re
 
 
 class HmsPatient(models.Model):
@@ -10,6 +12,7 @@ class HmsPatient(models.Model):
     first_name = fields.Char(string='First Name', required=True)
     last_name = fields.Char(string='Last Name', required=True)
     name = fields.Char(string='Name', compute='_compute_name', store=True)
+    email = fields.Char(string='Email')
     birthdate = fields.Date(string='Birthdate')
     history = fields.Html(string='History', sanitize=False)
     cr_ratio = fields.Float(string='CR Ratio')
@@ -38,6 +41,11 @@ class HmsPatient(models.Model):
         ('serious', 'Serious'),
     ], string='State', default='undetermined')
     log_ids = fields.One2many('hms.patient.log', 'patient_id', string='Log History')
+
+    _unique_email = models.Constraint(
+        'UNIQUE(email)',
+        'A patient with this email address already exists.',
+    )
 
     @api.depends('first_name', 'last_name')
     def _compute_name(self):
@@ -81,3 +89,10 @@ class HmsPatient(models.Model):
                         'description': f'State changed to {state_labels.get(vals["state"], vals["state"])}',
                     })
         return super(HmsPatient, self).write(vals)
+
+    @api.constrains('email')
+    def _check_email(self):
+        for rec in self:
+            if rec.email:
+                if not re.match(r'^[^@\s]+@[^@\s]+\.[^@\s]+$', rec.email):
+                    raise ValidationError(_('Please enter a valid email address.'))

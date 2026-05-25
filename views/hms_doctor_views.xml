@@ -38,6 +38,6 @@
             <field name="view_mode">list,form</field>
         </record>
 
-        <menuitem id="hms_menu_doctors" name="Doctors" parent="hms_menu_root" action="hms_doctor_action" sequence="30"/>
+        <menuitem id="hms_menu_doctors" name="Doctors" parent="hms_menu_root" action="hms_doctor_action" sequence="30" groups="hms.group_hms_manager"/>
     </data>
 </odoo>
